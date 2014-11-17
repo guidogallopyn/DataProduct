@@ -1,3 +1,7 @@
+# Shiny application for Coursera Data Specialization Data products Course
+# Guido Gallopyn
+#
+
 library(shiny) 
 
 vars <- list("Year" = "year", 
@@ -18,8 +22,7 @@ shinyUI(
       sidebarPanel(
         selectInput("xvar", " X Variable:", vars),
         selectInput("colvar", " Colour Variable:", vars),
-        checkboxInput("regression", "Show Regression Lines", FALSE),
-        checkboxInput("meandot", "Show mean", FALSE)
+        checkboxInput("regression", "Show Regression Lines", FALSE)
       ), 
       
       mainPanel(
