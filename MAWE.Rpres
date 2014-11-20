@@ -1,0 +1,67 @@
+Mid-Atlantic Wage Explorer (MAWE)
+========================================================
+author: Guido Gallopyn
+date: 11/20/2015
+
+Introduction
+========================================================
+
+**MAWE** was built to simplify exploration of the Mid-Atlantic wage data. It allows for investigation of  influence of predictor variables in the data set on wage as outcome. 
+
+- **Plots** : scatter plots of wage data along a selected predictor **x variable**, and coloring of data points according to a selected **color variable**, and allows to add locally weighted scatter-plot smoothing lines (LOESS).
+
+- **Summaries**: summary data by the x and color variables selected.
+
+- **Tables**: shows number of observations by the x and color variables selected.
+
+Mid Atlantic Wage Data Set
+========================================================
+
+```{r, echo=FALSE}
+library(ISLR); data(Wage)
+```
+Data is derived from the *March 2011 Supplement to Current Population Survey data*. (http://thedataweb.rm.census.gov/TheDataWeb), and contains `r nrow(Wage)` observations with `r length(names(Wage))` variables
+
+```{r, echo=FALSE}
+names(Wage)
+```
+
+Plots
+========================================================
+
+```{r, echo=FALSE}
+library(ggplot2)
+ggplot(Wage, aes(age,wage,colour=education)) + guides(colour=guide_legend("Education")) +
+        ylab("Annual Wage (1000s USD)") + xlab("Age")  + geom_point() + 
+      geom_smooth(method='loess', formula=y~x)
+```
+
+***
+- Scatter plot showing Wage on Y-axis
+
+- Selection of X-axis variable (here Age)
+
+- Selection of Color variable (here Education)
+
+- LOESS lines per color factor level (here Education)
+ 
+Summaries
+========================================================
+
+```{r, echo=FALSE, results='asis' }
+library(xtable)
+d <-aggregate(Wage$wage,by=list(xvar=Wage$year,colvar=Wage$jobclass),mean)
+d <- reshape(d,direction="wide",idvar="xvar",timevar="colvar")
+names(d) <- c("Year",levels(as.factor(Wage$jobclass)))
+print(xtable(d,digits=1),type="html")
+```
+***
+
+- Wage information (here mean) for an X variable (here Year) and color Variable (here Job-Class)
+
+- summary functions 
+  + mean, standard deviation 
+  + minimum, maximum
+  + median
+  + 25% and 75% quantiles
+  + frequencies
