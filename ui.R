@@ -3,6 +3,7 @@
 #
 
 library(shiny) 
+require(markdown)
 
 vars <- list("Age" = "age", 
              "Year" = "year", 
